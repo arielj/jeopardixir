@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+  phoenix:
+    build: .
+    ports:
+      - "4000:4000"
+    entrypoint: ./entrypoint.sh
+    environment:
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: jeopardixir_dev
+      PGPORT: 5432
+      PGHOST: database
+    volumes:
+      - ".:/jeopardixir"
+      - /jeopardixir/assets/node_modules
+    depends_on:
+      - database
+  database:
+    image: postgres:13.3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
