@@ -6,7 +6,6 @@ defmodule Jeopardixir.Accounts.User do
   schema "users" do
     field :encrypted_password, :string
     field :username, :string
-
     timestamps()
   end
 

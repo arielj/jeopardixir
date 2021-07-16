@@ -101,4 +101,12 @@ defmodule Jeopardixir.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def get_by_username(username) when is_nil(username) do
+    nil
+  end
+
+  def get_by_username(username) do
+    Repo.get_by(User, username: username)
+  end
 end
