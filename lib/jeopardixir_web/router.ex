@@ -22,6 +22,8 @@ defmodule JeopardixirWeb.Router do
     get "/sign-in", SessionController, :new
     post "/sign-in", SessionController, :create
     delete "/sign-out", SessionController, :delete
+
+    resources "/categories", CategoryController
   end
 
   # Other scopes may use custom stacks.
