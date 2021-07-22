@@ -29,6 +29,8 @@ defmodule JeopardixirWeb do
 
   def view do
     quote do
+      import JeopardixirWeb.Helpers.Auth, only: [signed_in?: 1]
+
       use Phoenix.View,
         root: "lib/jeopardixir_web/templates",
         namespace: JeopardixirWeb
