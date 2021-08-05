@@ -20,9 +20,7 @@
             <%= link "Sign up",  to: Routes.user_path(@conn, :new) %>
           <% end %>
         </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
-        </a>
+        <%= link "Categories", to: Routes.category_path(@conn, :index) %>
       </section>
     </header>
     <main role="main" class="container">
