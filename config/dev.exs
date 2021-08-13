@@ -1,15 +1,31 @@
 use Mix.Config
 
-# Configure your database
-# config :jeopardixir, Jeopardixir.Repo,
-#   username: "postgres",
-#   password: "123456",
-#   database: "jeopardixir_dev",
-#   hostname: "localhost",
-#   show_sensitive_data_on_connection_error: true,
-#   pool_size: 10
+defmodule ReadDotenv do
+  def put_env_var(line) do
+    [var_name, var_value] = String.split(line, "=", parts: 2)
+    unless System.get_env(var_name) do
+      System.put_env(var_name, var_value)
+    end
+  end
 
-# For docker
+  def put_env_vars(content) do
+    Enum.each(String.split(content, "\n"), fn line -> put_env_var(line) end)
+  end
+
+  def load! do
+    env_path = ".env"
+    if File.exists?(env_path) do
+      case File.read(env_path) do
+        {:ok, content} -> put_env_vars(content)
+      end
+    end
+  end
+end
+
+ReadDotenv.load!
+
+# Configure your database
+# Set the env variable in a .env file, use .env.sample as an example
 config :jeopardixir, Jeopardixir.Repo,
   username: System.get_env("PGUSER"),
   password: System.get_env("PGPASSWORD"),
