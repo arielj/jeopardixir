@@ -2,9 +2,11 @@ use Mix.Config
 
 defmodule ReadDotenv do
   def put_env_var(line) do
-    [var_name, var_value] = String.split(line, "=", parts: 2)
-    unless System.get_env(var_name) do
-      System.put_env(var_name, var_value)
+    if line != "" do
+      [var_name, var_value] = String.split(line, "=", parts: 2)
+      unless System.get_env(var_name) do
+        System.put_env(var_name, var_value)
+      end
     end
   end
 
