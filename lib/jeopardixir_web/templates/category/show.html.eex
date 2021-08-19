@@ -1,13 +1,45 @@
-<h1>Show Category</h1>
+<h1>Categories / <%= @category.name %></h1>
 
-<ul>
+<h3>Add a new answer</h3>
+<%= form_for @changeset, Routes.category_category_path(@conn, :add_answer, @category), fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @category.name %>
-  </li>
+  <%= label f, :body, "What is your answer?" %>
+  <%= text_input f, :body %>
+  <%= error_tag f, :body %>
 
-</ul>
+  <div>
+    <%= submit "Save" %>
+  </div>
+<% end %>
 
-<span><%= link "Edit", to: Routes.category_path(@conn, :edit, @category) %></span>
-<span><%= link "Back", to: Routes.category_path(@conn, :index) %></span>
+<h3>Your answers</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Answer</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for answer <- @category.answers do %>
+    <tr>
+      <td><%= answer.body %></td>
+      <td><%= answer.user_id %></td>
+      <td>
+        <span><%= link "Show", to: Routes.answer_path(@conn, :show, answer) %></span>
+        <span><%= link "Edit", to: Routes.answer_path(@conn, :edit, answer) %></span>
+        <span><%= link "Delete", to: Routes.answer_path(@conn, :delete, answer), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "Edit Category | ", to: Routes.category_path(@conn, :edit, @category) %></span>
+<span><%= link "Back to Home", to: Routes.category_path(@conn, :index) %></span>

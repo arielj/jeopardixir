@@ -21,6 +21,7 @@
           <% end %>
         </nav>
         <%= link "Categories", to: Routes.category_path(@conn, :index) %>
+        <%= link "Answers", to: Routes.answer_path(@conn, :index) %>
       </section>
     </header>
     <main role="main" class="container">
