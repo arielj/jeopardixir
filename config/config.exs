@@ -35,7 +35,7 @@ defmodule ReadDotenv do
 
   # load the .env* files
   def load! do
-    [".env", ".env.#{Mix.env()}"]
+    [".env.#{Mix.env()}", ".env"]
     |> Enum.each(&load_file/1)
   end
 end
