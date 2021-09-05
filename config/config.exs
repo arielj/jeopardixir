@@ -22,9 +22,16 @@ defmodule ReadDotenv do
   end
 
   def load! do
-    env_path = ".env"
-    if File.exists?(env_path) do
-      case File.read(env_path) do
+    file_path = ".env"
+    if File.exists?(file_path) do
+      case File.read(file_path) do
+        {:ok, content} -> put_env_vars(content)
+      end
+    end
+
+    env_file_path = ".env.#{Mix.env()}"
+    if File.exists?(env_file_path) do
+      case File.read(env_file_path) do
         {:ok, content} -> put_env_vars(content)
       end
     end
@@ -32,6 +39,8 @@ defmodule ReadDotenv do
 end
 
 ReadDotenv.load!
+
+IO.puts System.get_env("PGDATABASE")
 
 config :jeopardixir,
   ecto_repos: [Jeopardixir.Repo]
