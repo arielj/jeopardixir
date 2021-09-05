@@ -8,39 +8,39 @@
 use Mix.Config
 
 defmodule ReadDotenv do
-  def put_env_var(line) do
-    if line != "" do
-      [var_name, var_value] = String.split(line, "=", parts: 2)
-      unless System.get_env(var_name) do
-        System.put_env(var_name, var_value)
-      end
+  # processes a line setting the env variable only if not present
+  defp put_env_var(""), do: "" # do nothing if line is empty
+  defp put_env_var(line) do
+    [var_name, var_value] = String.split(line, "=", parts: 2)
+    unless System.get_env(var_name) do
+      System.put_env(var_name, var_value)
     end
   end
 
-  def put_env_vars(content) do
-    Enum.each(String.split(content, "\n"), fn line -> put_env_var(line) end)
+  # parse and process each line
+  defp put_env_vars(content) do
+    content
+    |> String.split("\n")
+    |> Enum.each(&put_env_var/1)
   end
 
-  def load! do
-    file_path = ".env"
+  # check if file existes and process its content
+  defp load_file(file_path) do
     if File.exists?(file_path) do
       case File.read(file_path) do
         {:ok, content} -> put_env_vars(content)
       end
     end
+  end
 
-    env_file_path = ".env.#{Mix.env()}"
-    if File.exists?(env_file_path) do
-      case File.read(env_file_path) do
-        {:ok, content} -> put_env_vars(content)
-      end
-    end
+  # load the .env* files
+  def load! do
+    [".env", ".env.#{Mix.env()}"]
+    |> Enum.each(&load_file/1)
   end
 end
 
 ReadDotenv.load!
-
-IO.puts System.get_env("PGDATABASE")
 
 config :jeopardixir,
   ecto_repos: [Jeopardixir.Repo]
