@@ -27,7 +27,7 @@
     </tr>
   </thead>
   <tbody>
-<%= for answer <- @category.answers do %>
+<%= for answer <- @answers do %>
     <tr>
       <td><%= answer.body %></td>
       <td><%= answer.user_id %></td>

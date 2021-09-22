@@ -7,6 +7,7 @@ defmodule Jeopardixir.Board do
   alias Jeopardixir.Repo
 
   alias Jeopardixir.Board.Category
+  alias Jeopardixir.Board.Answer
 
   @doc """
   Returns the list of categories.
@@ -36,6 +37,15 @@ defmodule Jeopardixir.Board do
 
   """
   def get_category!(id), do: Repo.get!(Category, id) |> Repo.preload(:answers)
+
+  def get_answer_for_category(_, nil), do: []
+  def get_answer_for_category(nil, _), do: []
+
+  def get_answer_for_category(category_id, user_id) do
+    query = from a in Answer,
+            where: a.user_id == ^user_id and a.category_id == ^category_id
+    Repo.all(query)
+  end
 
   @doc """
   Creates a category.

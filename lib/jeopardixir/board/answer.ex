@@ -17,7 +17,7 @@ defmodule Jeopardixir.Board.Answer do
   @doc false
   def changeset(answer, attrs) do
     answer
-    |> cast(attrs, [:body])
+    |> cast(attrs, [:body, :category_id, :user_id])
     |> validate_required([:body])
   end
 end

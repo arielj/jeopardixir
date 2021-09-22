@@ -42,8 +42,10 @@ defmodule JeopardixirWeb.CategoryController do
 
   def show(conn, %{"id" => id}) do
     category = Board.get_category!(id)
+    user_id = Plug.Conn.get_session(conn, :current_user_id)
+    answers = Board.get_answer_for_category(category.id, user_id)
     changeset = Board.change_answer(%Answer{})
-    render(conn, "show.html", category: category, changeset: changeset)
+    render(conn, "show.html", category: category, changeset: changeset, answers: answers)
   end
 
   def edit(conn, %{"id" => id}) do
