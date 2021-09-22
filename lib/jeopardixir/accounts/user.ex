@@ -1,7 +1,6 @@
 defmodule Jeopardixir.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Comeonin.Bcrypt
 
   schema "users" do
     field :encrypted_password, :string
@@ -15,6 +14,6 @@ defmodule Jeopardixir.Accounts.User do
     |> cast(attrs, [:username, :encrypted_password])
     |> validate_required([:username, :encrypted_password])
     |> unique_constraint(:username)
-    |> update_change(:encrypted_password, &Bcrypt.hashpwsalt/1)
+    |> update_change(:encrypted_password, &Bcrypt.hash_pwd_salt/1)
   end
 end
