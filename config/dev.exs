@@ -1,31 +1,5 @@
 use Mix.Config
 
-defmodule ReadDotenv do
-  def put_env_var(line) do
-    if line != "" do
-      [var_name, var_value] = String.split(line, "=", parts: 2)
-      unless System.get_env(var_name) do
-        System.put_env(var_name, var_value)
-      end
-    end
-  end
-
-  def put_env_vars(content) do
-    Enum.each(String.split(content, "\n"), fn line -> put_env_var(line) end)
-  end
-
-  def load! do
-    env_path = ".env"
-    if File.exists?(env_path) do
-      case File.read(env_path) do
-        {:ok, content} -> put_env_vars(content)
-      end
-    end
-  end
-end
-
-ReadDotenv.load!
-
 # Configure your database
 # Set the env variable in a .env file, use .env.sample as an example
 config :jeopardixir, Jeopardixir.Repo,
