@@ -1,15 +1,7 @@
 use Mix.Config
 
 # Configure your database
-# config :jeopardixir, Jeopardixir.Repo,
-#   username: "postgres",
-#   password: "123456",
-#   database: "jeopardixir_dev",
-#   hostname: "localhost",
-#   show_sensitive_data_on_connection_error: true,
-#   pool_size: 10
-
-# For docker
+# Set the env variable in a .env file, use .env.sample as an example
 config :jeopardixir, Jeopardixir.Repo,
   username: System.get_env("PGUSER"),
   password: System.get_env("PGPASSWORD"),
