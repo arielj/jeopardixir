@@ -19,21 +19,22 @@ To get started with the app, run:
 # Ideas
 
 A user:
-- can register
-- can login
-- can add clues in different categories
+[x] can register
+[x] can login
+[x] can add answers in different categories
 
 A board includes:
 - Categories
-- clues and names for each category
+- answers and names for each category
+
 Board config:
 - When starting a game, the players pick a number of categories and clues
 - The app will pick random categories and random clues for those categories
 
 Game logic:
- 1 - logged in players will be sorted randomly
- 2 - current player is the first player
- 3 - if there are available options
+ 1. logged in players will be sorted randomly
+ 2. current player is the first player
+ 3. if there are available options
  4 - - the first player picks a category and a value
  5 - - the player then has to pick the name from a list
  6 - - if it's the wrong name, the rest of the player get to guess picking an option from a list
