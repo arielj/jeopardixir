@@ -23,7 +23,11 @@ defmodule JeopardixirWeb.Router do
     post "/sign-in", SessionController, :create
     delete "/sign-out", SessionController, :delete
 
-    resources "/categories", CategoryController
+    resources "/answers", AnswerController
+
+    resources "/categories", CategoryController do  
+      post "add_answer", CategoryController, :add_answer
+    end
   end
 
   # Other scopes may use custom stacks.

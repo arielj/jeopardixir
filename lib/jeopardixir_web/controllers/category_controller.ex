@@ -3,6 +3,7 @@ defmodule JeopardixirWeb.CategoryController do
 
   alias Jeopardixir.Board
   alias Jeopardixir.Board.Category
+  alias Jeopardixir.Board.Answer
 
   def index(conn, _params) do
     categories = Board.list_categories()
@@ -26,9 +27,25 @@ defmodule JeopardixirWeb.CategoryController do
     end
   end
 
+  def add_answer(conn, %{"answer" => %{"body" => body }, "category_id" => category_id}) do
+    user_id = Plug.Conn.get_session(conn, :current_user_id)
+    case Board.create_answer(%{body: body, category_id: category_id, user_id: user_id}) do
+      {:ok, answer} ->
+        conn
+        |> put_flash(:info, "Answer created successfully.")
+        |> redirect(to: Routes.category_path(conn, :show, category_id))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
+  end
+
   def show(conn, %{"id" => id}) do
     category = Board.get_category!(id)
-    render(conn, "show.html", category: category)
+    user_id = Plug.Conn.get_session(conn, :current_user_id)
+    answers = Board.get_answer_for_category(category.id, user_id)
+    changeset = Board.change_answer(%Answer{})
+    render(conn, "show.html", category: category, changeset: changeset, answers: answers)
   end
 
   def edit(conn, %{"id" => id}) do
