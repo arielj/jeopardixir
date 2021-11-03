@@ -1,14 +1,14 @@
 defmodule JeopardixirWeb.AnswerControllerTest do
   use JeopardixirWeb.ConnCase
 
-  alias Jeopardixir.Board
+  alias Jeopardixir.Answers
 
   @create_attrs %{body: "some body"}
   @update_attrs %{body: "some updated body"}
   @invalid_attrs %{body: nil}
 
   def fixture(:answer) do
-    {:ok, answer} = Board.create_answer(@create_attrs)
+    {:ok, answer} = Answers.create_answer(@create_attrs)
     answer
   end
 

@@ -1,14 +1,14 @@
 defmodule JeopardixirWeb.CategoryControllerTest do
   use JeopardixirWeb.ConnCase
 
-  alias Jeopardixir.Board
+  alias Jeopardixir.Categories
 
   @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
 
   def fixture(:category) do
-    {:ok, category} = Board.create_category(@create_attrs)
+    {:ok, category} = Categories.create_category(@create_attrs)
     category
   end
 
@@ -34,7 +34,7 @@ defmodule JeopardixirWeb.CategoryControllerTest do
       assert redirected_to(conn) == Routes.category_path(conn, :show, id)
 
       conn = get(conn, Routes.category_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Category"
+      assert html_response(conn, 200) =~ "Categories / "
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
