@@ -21,6 +21,7 @@ defmodule JeopardixirWeb do
     quote do
       use Phoenix.Controller, namespace: JeopardixirWeb
 
+      import Jeopardixir.RequireUser, only: [require_user: 2]
       import Plug.Conn
       import JeopardixirWeb.Gettext
       alias JeopardixirWeb.Router.Helpers, as: Routes

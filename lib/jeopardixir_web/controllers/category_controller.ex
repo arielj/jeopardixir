@@ -5,6 +5,8 @@ defmodule JeopardixirWeb.CategoryController do
   alias Jeopardixir.Board.Category
   alias Jeopardixir.Board.Answer
 
+  plug :require_user when action in [:new, :create, :add_answer]
+
   def index(conn, _params) do
     categories = Board.list_categories()
     render(conn, "index.html", categories: categories)
@@ -30,7 +32,7 @@ defmodule JeopardixirWeb.CategoryController do
   def add_answer(conn, %{"answer" => %{"body" => body }, "category_id" => category_id}) do
     user_id = Plug.Conn.get_session(conn, :current_user_id)
     case Board.create_answer(%{body: body, category_id: category_id, user_id: user_id}) do
-      {:ok, answer} ->
+      {:ok, _answer} ->
         conn
         |> put_flash(:info, "Answer created successfully.")
         |> redirect(to: Routes.category_path(conn, :show, category_id))
