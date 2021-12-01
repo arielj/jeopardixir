@@ -1,16 +1,35 @@
 # jeopardixir
+
 Jeopardy app made with Elixir to study
 
 # Developing Jeopardixir
 
-Requirements:
-- Docker
+## Requirements:
+
+### Standalone:
+
 - Install Elixir (see: https://elixir-lang.org/install.html)
 - Ensure you have Elixir installed by running `elixir -v`
-- Install Phoenix (see: https://hexdocs.pm/phoenix/installation.html#elixir-1-6-or-later)
-- Install Node JS (eg. `brew install node`)
+- Install Node JS (ideally, version 14, use a version manager if needed)
 
-To get started with the app, run:
+### Using Docker:
+
+- Docker (no more dependencies)
+
+## Start the App
+
+Clone the project with `git clone git@github.com:arielj/jeopardixir.git`
+
+Then run:
+
+### Standalone:
+
+1. `mix deps.get` # gets all the dependencies
+2. Configure the database
+3. `mix setup` # creates database, runs migrations and seeds
+4. `mix phx.server` # start the server
+
+### Using Docker:
 
 1. `git clone git@github.com:arielj/jeopardixir.git`
 2. `mix deps.get`
