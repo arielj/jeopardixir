@@ -2,14 +2,21 @@ defmodule JeopardixirWeb.CategoryControllerTest do
   use JeopardixirWeb.ConnCase
 
   alias Jeopardixir.Categories
+  alias Jeopardixir.Accounts
 
   @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
+  @user_attrs %{username: "Mateus", encrypted_password: "xksjsndkcjbsd"}
 
   def fixture(:category) do
     {:ok, category} = Categories.create_category(@create_attrs)
     category
+  end
+
+  def fixture(:user) do
+    {:ok, user} = Accounts.create_user(@user_attrs)
+    user
   end
 
   describe "index" do
@@ -21,6 +28,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
 
   describe "new category" do
     test "renders form", %{conn: conn} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = get(conn, Routes.category_path(conn, :new))
       assert html_response(conn, 200) =~ "New Category"
     end
@@ -28,6 +37,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
 
   describe "create category" do
     test "redirects to show when data is valid", %{conn: conn} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = post(conn, Routes.category_path(conn, :create), category: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
@@ -38,6 +49,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = post(conn, Routes.category_path(conn, :create), category: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Category"
     end
