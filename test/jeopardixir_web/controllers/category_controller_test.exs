@@ -60,6 +60,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
     setup [:create_category]
 
     test "renders form for editing chosen category", %{conn: conn, category: category} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = get(conn, Routes.category_path(conn, :edit, category))
       assert html_response(conn, 200) =~ "Edit Category"
     end
@@ -69,6 +71,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
     setup [:create_category]
 
     test "redirects when data is valid", %{conn: conn, category: category} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = put(conn, Routes.category_path(conn, :update, category), category: @update_attrs)
       assert redirected_to(conn) == Routes.category_path(conn, :show, category)
 
@@ -77,6 +81,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, category: category} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = put(conn, Routes.category_path(conn, :update, category), category: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Category"
     end
@@ -86,6 +92,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
     setup [:create_category]
 
     test "deletes chosen category", %{conn: conn, category: category} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = delete(conn, Routes.category_path(conn, :delete, category))
       assert redirected_to(conn) == Routes.category_path(conn, :index)
       assert_error_sent 404, fn ->

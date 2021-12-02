@@ -6,7 +6,7 @@ defmodule JeopardixirWeb.CategoryController do
   alias Jeopardixir.Board.Category
   alias Jeopardixir.Board.Answer
 
-  plug :require_user when action in [:new, :create, :add_answer]
+  plug :require_user when action in [:new, :create, :add_answer, :edit, :update, :delete]
 
   def index(conn, _params) do
     categories = Categories.list_categories()
