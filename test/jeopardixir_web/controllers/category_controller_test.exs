@@ -1,15 +1,22 @@
 defmodule JeopardixirWeb.CategoryControllerTest do
   use JeopardixirWeb.ConnCase
 
-  alias Jeopardixir.Board
+  alias Jeopardixir.Categories
+  alias Jeopardixir.Accounts
 
   @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
+  @user_attrs %{username: "Mateus", encrypted_password: "xksjsndkcjbsd"}
 
   def fixture(:category) do
-    {:ok, category} = Board.create_category(@create_attrs)
+    {:ok, category} = Categories.create_category(@create_attrs)
     category
+  end
+
+  def fixture(:user) do
+    {:ok, user} = Accounts.create_user(@user_attrs)
+    user
   end
 
   describe "index" do
@@ -21,6 +28,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
 
   describe "new category" do
     test "renders form", %{conn: conn} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = get(conn, Routes.category_path(conn, :new))
       assert html_response(conn, 200) =~ "New Category"
     end
@@ -28,16 +37,20 @@ defmodule JeopardixirWeb.CategoryControllerTest do
 
   describe "create category" do
     test "redirects to show when data is valid", %{conn: conn} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = post(conn, Routes.category_path(conn, :create), category: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.category_path(conn, :show, id)
 
       conn = get(conn, Routes.category_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Category"
+      assert html_response(conn, 200) =~ "Categories / "
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = post(conn, Routes.category_path(conn, :create), category: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Category"
     end
@@ -47,6 +60,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
     setup [:create_category]
 
     test "renders form for editing chosen category", %{conn: conn, category: category} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = get(conn, Routes.category_path(conn, :edit, category))
       assert html_response(conn, 200) =~ "Edit Category"
     end
@@ -56,6 +71,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
     setup [:create_category]
 
     test "redirects when data is valid", %{conn: conn, category: category} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = put(conn, Routes.category_path(conn, :update, category), category: @update_attrs)
       assert redirected_to(conn) == Routes.category_path(conn, :show, category)
 
@@ -64,6 +81,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, category: category} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = put(conn, Routes.category_path(conn, :update, category), category: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Category"
     end
@@ -73,6 +92,8 @@ defmodule JeopardixirWeb.CategoryControllerTest do
     setup [:create_category]
 
     test "deletes chosen category", %{conn: conn, category: category} do
+      fixture(:user)
+      conn = post(conn, Routes.session_path(conn, :create), %{"session" => %{"username" => @user_attrs.username, "password" => @user_attrs.encrypted_password}})
       conn = delete(conn, Routes.category_path(conn, :delete, category))
       assert redirected_to(conn) == Routes.category_path(conn, :index)
       assert_error_sent 404, fn ->
