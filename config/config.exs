@@ -5,7 +5,7 @@
 # is restricted to this project.
 
 # General application configuration
-use Mix.Config
+import Config
 
 defmodule ReadDotenv do
   # processes a line setting the env variable only if not present
@@ -52,6 +52,16 @@ config :jeopardixir, JeopardixirWeb.Endpoint,
   render_errors: [view: JeopardixirWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Jeopardixir.PubSub,
   live_view: [signing_salt: "6JnKc6AS"]
+
+# Configure esbuild (the version is required)
+config :esbuild,
+  version: "0.13.5",
+  default: [
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

@@ -25,8 +25,8 @@ defmodule JeopardixirWeb.Router do
 
     resources "/answers", AnswerController
 
-    resources "/categories", CategoryController do  
-      post "add_answer", CategoryController, :add_answer
+    resources "/categories", CategoryController do
+      post "/add_answer", CategoryController, :add_answer
     end
   end
 
